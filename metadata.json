@@ -1,0 +1,6 @@
+{
+  "name": "قلم کا زور",
+  "description": "A high-performance multilingual educational portal and scholarly article repository with a secure administration dashboard.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
