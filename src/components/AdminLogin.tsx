@@ -29,7 +29,7 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({
     try {
       // Direct local credentials check for secure admin bypass
       if (username === "rahbar@786" && password === "@rahbar@786") {
-        localStorage.setItem('bma_authenticated', 'true');
+        localStorage.setItem('qkz_authenticated', 'true');
         onLoginSuccess();
         return;
       }
@@ -42,7 +42,7 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({
         .eq('password', password);
 
       if (!dbError && data && data.length > 0) {
-        localStorage.setItem('bma_authenticated', 'true');
+        localStorage.setItem('qkz_authenticated', 'true');
         onLoginSuccess();
       } else {
         setError(t.loginError);
@@ -90,7 +90,7 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({
               required
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              placeholder="Enter username"
+              placeholder="rahbar@786"
               className="w-full px-4 py-3 bg-slate-50 rounded-lg border border-slate-200 focus:border-[#008080] focus:ring-2 focus:ring-[#008080]/10 transition-all outline-none text-sm text-slate-800"
             />
           </div>
