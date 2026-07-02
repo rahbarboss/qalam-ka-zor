@@ -1,6 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Noto+Naskh+Arabic:wght@400;700&family=Noto+Nastaliq+Urdu:wght@400;700&family=Tiro+Devanagari+Hindi&display=swap');
+
 @import "tailwindcss";
 
+/* ============================================
+   FONT FACE DECLARATIONS - MULTILINGUAL
+   ============================================ */
+
+/* AA Sameer Asmaak - Brand Font */
 @font-face {
   font-family: 'AA Sameer Asmaak Regular';
   src: local('AA Sameer Asmaak Regular'), local('AA Sameer Asmaak'), local('AASameerAsmaak');
@@ -8,36 +14,112 @@
   font-style: normal;
 }
 
+/* Jameel Noori Nastaliq - Urdu Priority */
+@font-face {
+  font-family: 'Jameel Noori Nastaliq';
+  src: url('https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;700&display=swap');
+  font-weight: normal;
+  font-style: normal;
+  unicode-range: U+0600-U+06FF, U+0750-U+077F; /* Urdu/Arabic Unicode range */
+}
+
+/* ============================================
+   TAILWIND THEME CONFIGURATION
+   ============================================ */
+
 @theme {
   --font-sans: "Poppins", "Inter", system-ui, sans-serif;
   --font-arabic: "Noto Naskh Arabic", serif;
-  --font-urdu: "Noto Nastaliq Urdu", "Jameel Noori Nastaliq", serif;
+  --font-urdu: "Jameel Noori Nastaliq", "Noto Nastaliq Urdu", serif;
   --font-hindi: "Tiro Devanagari Hindi", serif;
-  --font-brand: "AA Sameer Asmaak Regular", "AA Sameer Asmaak", "Noto Nastaliq Urdu", "Jameel Noori Nastaliq", serif;
+  --font-brand: "AA Sameer Asmaak Regular", "AA Sameer Asmaak", "Jameel Noori Nastaliq", "Noto Nastaliq Urdu", serif;
+  
+  /* Brand Colors */
+  --color-primary-teal: #008080;
+  --color-accent-gold: #FFD700;
 }
 
-/* Base resets & custom scrollbars */
+/* ============================================
+   GLOBAL BASE STYLES
+   ============================================ */
+
 html {
   scroll-behavior: smooth;
+  /* Enforce UTF-8 encoding for all text */
+  -webkit-text-size-adjust: 100%;
+}
+
+html[lang="ur"],
+html[lang="ar"] {
+  direction: rtl;
+  text-align: right;
+}
+
+html[lang="en"],
+html[lang="hi"] {
+  direction: ltr;
+  text-align: left;
 }
 
 body {
   font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  /* UTF-8 character rendering */
+  charset: utf-8;
 }
 
-/* Hide scrollbar for Chrome, Safari and Opera */
+/* ============================================
+   URDU/ARABIC TEXT RENDERING FIX
+   ============================================ */
+
+[lang="ur"],
+[dir="rtl"] {
+  font-family: "Jameel Noori Nastaliq", "Noto Nastaliq Urdu", "Traditional Arabic", serif !important;
+  font-size: 1.05em; /* Slightly larger for RTL readability */
+  letter-spacing: 0.3px;
+  line-height: 1.8;
+  word-spacing: 0.2em;
+}
+
+[lang="ar"] {
+  font-family: "Noto Naskh Arabic", "Traditional Arabic", serif !important;
+  font-size: 1.05em;
+  letter-spacing: 0.2px;
+  line-height: 1.8;
+}
+
+[lang="hi"] {
+  font-family: "Tiro Devanagari Hindi", serif !important;
+  font-size: 1em;
+  line-height: 1.8;
+  letter-spacing: 0.1px;
+}
+
+[lang="en"] {
+  font-family: "Poppins", "Arial", sans-serif;
+}
+
+/* Enforce Urdu on brand name globally */
+.font-brand,
+[class*="brand"] {
+  font-family: "AA Sameer Asmaak Regular", "Jameel Noori Nastaliq", "Noto Nastaliq Urdu", serif !important;
+}
+
+/* ============================================
+   SCROLLBAR CUSTOMIZATION
+   ============================================ */
+
 .hide-scrollbar::-webkit-scrollbar {
   display: none;
 }
 
-/* Hide scrollbar for IE, Edge and Firefox */
 .hide-scrollbar {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
-/* Smooth custom scrollbars */
 .custom-scrollbar::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -56,18 +138,174 @@ body {
   background: #008080;
 }
 
-/* Text Gradient - Premium Polished Gold representing 'قلم کا زور' */
+/* ============================================
+   GRADIENT & COLOR UTILITIES
+   ============================================ */
+
+/* Premium Polished Gold Gradient */
 .text-gradient-teal-gold {
   background: linear-gradient(135deg, #fce082 0%, #dfa82e 35%, #b48011 70%, #fbd561 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  background-clip: text;
   filter: drop-shadow(0px 1px 1px rgba(0, 0, 0, 0.1));
   font-weight: 600;
 }
 
-/* Tiptap simulated visual adjustments */
+.bg-gradient-teal-gold {
+  background: linear-gradient(135deg, #fce082 0%, #dfa82e 35%, #b48011 70%, #fbd561 100%);
+}
+
+.border-gradient-teal-gold {
+  border: 2px solid transparent;
+  background-image: linear-gradient(white, white), linear-gradient(135deg, #fce082 0%, #dfa82e 35%, #b48011 70%, #fbd561 100%);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+}
+
+/* Teal accent utilities */
+.text-teal-primary {
+  color: #008080;
+}
+
+.bg-teal-primary {
+  background-color: #008080;
+}
+
+.border-teal-primary {
+  border-color: #008080;
+}
+
+.hover\:bg-teal-primary:hover {
+  background-color: #006666;
+}
+
+/* Gold accent utilities */
+.text-gold-accent {
+  color: #FFD700;
+}
+
+.bg-gold-accent {
+  background-color: #FFD700;
+}
+
+.border-gold-accent {
+  border-color: #FFD700;
+}
+
+/* ============================================
+   CONTENT EDITABLE STYLES
+   ============================================ */
+
 [contenteditable="true"]:empty:before {
   content: attr(data-placeholder);
   color: #9ca3af;
   pointer-events: none;
+}
+
+[contenteditable="true"]:focus {
+  outline: 2px solid #008080;
+  outline-offset: 2px;
+}
+
+/* ============================================
+   ANIMATION & TRANSITION CLASSES
+   ============================================ */
+
+@keyframes slideInUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes pulse-teal {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+.animate-slide-in-up {
+  animation: slideInUp 0.3s ease-out;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out;
+}
+
+.animate-pulse-teal {
+  animation: pulse-teal 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* ============================================
+   RESPONSIVE TYPOGRAPHY
+   ============================================ */
+
+@media (max-width: 640px) {
+  [lang="ur"],
+  [lang="ar"] {
+    font-size: 0.95em;
+  }
+  
+  .text-gradient-teal-gold {
+    font-size: 1.25rem;
+  }
+}
+
+/* ============================================
+   PRINT STYLES
+   ============================================ */
+
+@media print {
+  body {
+    font-family: "Jameel Noori Nastaliq", "Noto Nastaliq Urdu", serif;
+  }
+  
+  .no-print {
+    display: none !important;
+  }
+}
+
+/* ============================================
+   ACCESSIBILITY ENHANCEMENTS
+   ============================================ */
+
+/* Focus visible for keyboard navigation */
+:focus-visible {
+  outline: 2px solid #008080;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: more) {
+  body {
+    color: #000;
+    background-color: #fff;
+  }
 }
