@@ -24,7 +24,7 @@ import {
 export default function App() {
   // Localization context state
   const [currentLang, setCurrentLang] = useState<SupportedLanguage>(() => {
-    const cached = localStorage.getItem('bma_lang');
+    const cached = localStorage.getItem('qkz_lang');
     return (cached as SupportedLanguage) || 'en';
   });
 
@@ -41,20 +41,25 @@ export default function App() {
 
   // Router navigation state: 'portal' | 'login' | 'dashboard'
   const [currentView, setCurrentView] = useState<'portal' | 'login' | 'dashboard'>(() => {
-    const isAuthed = localStorage.getItem('bma_authenticated') === 'true';
+    const isAuthed = localStorage.getItem('qkz_authenticated') === 'true';
     return isAuthed ? 'dashboard' : 'portal';
   });
 
   // Tab selected in portal header
-  const [activeHeaderTab, setActiveHeaderTab] = useState<'courses' | 'library' | 'research' | 'admissions'>('courses');
+  const [activeHeaderTab, setActiveHeaderTab] = useState<'courses' | 'library' | 'research' | 'hadith'>('courses');
 
-  // Dynamic RTL/LTR and Font Swap triggers on language context updates
+  // Dynamic RTL/LTR and Font Swap on language change
   useEffect(() => {
-    localStorage.setItem('bma_lang', currentLang);
+    localStorage.setItem('qkz_lang', currentLang);
     document.documentElement.setAttribute('dir', LANGUAGES[currentLang].dir);
     document.documentElement.setAttribute('lang', currentLang);
+    document.documentElement.setAttribute('charset', 'UTF-8');
+    
     // Dynamically update document body font-family
     document.body.style.fontFamily = LANGUAGES[currentLang].fontFamily;
+    
+    // Force re-render of Urdu/Arabic text
+    document.body.style.textRendering = 'optimizeLegibility';
   }, [currentLang]);
 
   // Retrieve initial articles list from backend database
@@ -247,7 +252,7 @@ export default function App() {
 
   // Navigations
   const handleNavigateToAdmin = () => {
-    const isAuthed = localStorage.getItem('bma_authenticated') === 'true';
+    const isAuthed = localStorage.getItem('qkz_authenticated') === 'true';
     if (isAuthed) {
       setCurrentView('dashboard');
     } else {
@@ -260,12 +265,12 @@ export default function App() {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('bma_authenticated');
+    localStorage.removeItem('qkz_authenticated');
     setCurrentView('portal');
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col font-sans transition-all duration-300">
+    <div className="min-h-screen bg-slate-50 flex flex-col font-sans transition-all duration-300" lang={currentLang}>
       
       {/* Conditionally render header depending on dashboard mode */}
       {currentView !== 'dashboard' && (
@@ -335,7 +340,7 @@ export default function App() {
         )}
       </main>
 
-      {/* EDUCATIONAL PORTAL FOOTER */}
+      {/* FOOTER */}
       {currentView !== 'dashboard' && (
         <footer className="bg-slate-900 text-slate-300 border-t border-slate-800 pt-16 pb-20 md:pb-12 mt-16">
           <div className="max-w-[1440px] mx-auto px-4 md:px-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
@@ -349,7 +354,7 @@ export default function App() {
                   className="h-14 w-auto max-w-[56px] object-contain rounded-xl bg-white p-1 border border-slate-700/50"
                   referrerPolicy="no-referrer"
                 />
-                <h3 className="font-brand text-xl md:text-2xl font-medium text-gradient-teal-gold whitespace-nowrap tracking-wide leading-relaxed py-1">{t.portalTitle}</h3>
+                <h3 className="font-brand text-xl md:text-2xl font-medium text-gradient-teal-gold whitespace-nowrap tracking-wide leading-relaxed py-1">قلم کا زور</h3>
               </div>
               <p className="text-xs text-slate-400 leading-relaxed max-w-sm">
                 {t.footerText}
@@ -395,7 +400,6 @@ export default function App() {
               <h4 className="text-xs font-bold text-white uppercase tracking-widest mb-5">Support</h4>
               <ul className="space-y-2.5 text-xs text-slate-400 font-semibold">
                 <li><a href="#" className="hover:text-[#008080] transition-colors">{t.helpCenter}</a></li>
-                <li><a href="#" className="hover:text-[#008080] transition-colors">{t.admissionsOffice}</a></li>
                 <li><a href="#" className="hover:text-[#008080] transition-colors">{t.privacyPolicy}</a></li>
                 <li><a href="#" className="hover:text-[#008080] transition-colors">{t.termsOfService}</a></li>
                 <li><a href="#" className="hover:text-[#008080] transition-colors">{t.contactUs}</a></li>
@@ -404,7 +408,7 @@ export default function App() {
           </div>
 
           {/* Subfooter */}
-          <div className="pt-8 border-t border-slate-800 max-w-[1440px] mx-auto px-4 md:px-16 flex flex-col sm:flex-row justify-between items-center gap-4 text-[10px] text-slate-500 font-bold uppercase tracking-wider">
+          <div className="pt-8 border-t border-slate-800 max-w-[1440px] mx-auto px-4 md:px-16 flex flex-col sm:flex-row justify-between items-center gap-4 text-[10px] text-slate-500 font-bold uppercase">
             <p>{t.copyright}</p>
             <div className="flex gap-6 items-center flex-wrap">
               <span className="flex items-center gap-1 hover:text-[#008080] transition-colors cursor-pointer">
@@ -420,7 +424,7 @@ export default function App() {
         </footer>
       )}
 
-      {/* MOBILE BOTTOM NAV BAR (Matches Mockup style) */}
+      {/* MOBILE BOTTOM NAV BAR */}
       {currentView === 'portal' && (
         <nav className="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center bg-white border-t border-slate-200 py-2.5 z-50 shadow-lg">
           <button 
